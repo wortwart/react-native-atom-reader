@@ -4,7 +4,9 @@ This is a emo project with React Native to view and filter an Atom/RSS feed. Cur
 
 ![App Screenshot](./screenshot.png)
 
-The app displays all feed entries, opens them in the browser on touch, and allows entries to be filtered according to the user's text input (not case-sensitive). The button on the top right resets the filter.
+The app displays all feed entries, opens them in the browser on touch, and allows entries to be filtered according to the user's text input (not case-sensitive). The button on the top right resets the filter. Pulling refreshes the feed data.
+
+**Important: You may not publish an app with heise online's newsfeed** (which is used in the example code) **because [they do not permit displaying their images outside their own outlets](https://www.heise.de/news-extern/news.html)!**
 
 ## React Native Information
 

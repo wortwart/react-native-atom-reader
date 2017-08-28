@@ -4,15 +4,17 @@ import {parseString} from 'react-native-xml2js';
 import styles from './styles';
 
 export default class AtomFeedReader extends React.PureComponent {
+
 	constructor(props) {
 		super(props);
+		// Change to any Atom feed URL. Don't publish an app with heise online's feed! (see https://www.heise.de/news-extern/news.html)
 		this.atomFeedURL = 'https://www.heise.de/newsticker/heise-atom.xml';
 		this.state = {
-			data: [],
-			refreshing: false,
-			filterText: ''
+			data: [],	// the JSON converted feed
+			refreshing: false,	// are we reloading?
+			filterText: ''	// user input
 		};
-		this.filteredData = [];
+		this.filteredData = [];	// not in state to avoid useless rendering
 	};
 
 	componentDidMount() {
@@ -24,8 +26,10 @@ export default class AtomFeedReader extends React.PureComponent {
 		fetch(this.atomFeedURL)
 		.then(response => response.text())
 		.then(xml => {
+			// translate XML to JSON
 			parseString(xml, {explicitArray: false, trim: true, mergeAttrs: true}, (err, json) => {
 				let now = new Date();
+				// clean feed contents (HTML entities, date format)
 				json.feed.entry.forEach(item => {
 					item.title = this.cleanHTML(item.title._);
 					item.summary = this.cleanHTML(item.summary._);
@@ -38,6 +42,7 @@ export default class AtomFeedReader extends React.PureComponent {
 					date += ', ' + pubTime[0] + ':' + pubTime[1];
 					item.date = date;
 				});
+				// setting state triggers rerendering
 				this.setState({
 					data: json.feed.entry,
 					refreshing: false
@@ -47,7 +52,15 @@ export default class AtomFeedReader extends React.PureComponent {
 		.catch(err => console.error(err));
 	};
 
-	renderSearchbox = () => {
+	cleanHTML = text => text
+		// translate HTML entities
+		.replace(/&quot;/g, '"')
+		.replace(/&apos;/g, "'")
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/--/g, '–');
+
+	renderFilterbox = () => {
 		return(
 			<View style={styles.header}>
 				<TextInput
@@ -96,17 +109,10 @@ export default class AtomFeedReader extends React.PureComponent {
 		return(
 			<View style={styles.footer}>
 				<Text>{loadedItems}</Text>
-				<Text style={styles.copyright}>{"Demo-App in React Native von Herbert Braun (2017) als Tutorial für c't Magazin"}</Text>
+				<Text style={styles.copyright}>{"Demo-App in React Native by Herbert Braun (2017) als Tutorial für c't Magazin"}</Text>
 			</View>
 		);
 	};
-
-	cleanHTML = text => text
-		.replace(/&quot;/g, '"')
-		.replace(/&apos;/g, "'")
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/--/g, '–');
 
 	handleRefresh = () => {
 		console.info('Refreshing data');
@@ -115,24 +121,26 @@ export default class AtomFeedReader extends React.PureComponent {
 		}, () => this.requestData());
 	};
 
-	handleTouch = url => {
-		console.info('Opening ' + url);
-		Linking.openURL(url).catch(err => console.error('Konnte ' + url + ' nicht öffnen'));
-	};
-
 	handleFilterReset = () => {
 		console.info('Resetting filter');
 		this.setState({filterText: ''});
 	};
 
+	handleTouch = url => {
+		console.info('Opening ' + url);
+		Linking.openURL(url).catch(err => console.error('Konnte ' + url + ' nicht öffnen'));
+	};
+
 	render() {
 		if (this.state.filterText) {
+			// filter data and copy them to filteredData
 			const filterRegex = new RegExp(String(this.state.filterText), 'i');
 			const filter = item => (
 				filterRegex.test(item.title) || filterRegex.test(item.summary)
 			);
 			this.filteredData = this.state.data.filter(filter);
 		} else {
+			// avoid filtering if filter is empty
 			this.filteredData = this.state.data;
 		}
 		return(
@@ -142,7 +150,7 @@ export default class AtomFeedReader extends React.PureComponent {
 				keyExtractor={entry => entry.id}
 				renderItem={entry => this.renderListItem(entry.item)}
 				ItemSeparatorComponent={this.renderSeparator}
-				ListHeaderComponent={this.renderSearchbox}
+				ListHeaderComponent={this.renderFilterbox}
 				ListFooterComponent={this.renderFooter}
 				refreshing={this.state.refreshing}
 				onRefresh={this.handleRefresh}
