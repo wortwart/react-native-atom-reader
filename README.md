@@ -2,6 +2,8 @@
 
 This is a emo project with React Native to view and filter an Atom/RSS feed. Currently, it has only been tested with Android smartphones and the Atom feed of [heise online](https://heise.de/), but it should also work on iOS and other standards compliant Atom newsfeeds.
 
+This project was created for a tutorial in [c't Magazin](https://ct.de/) which will appear in autumn 2017.
+
 ![App Screenshot](./screenshot.png)
 
 The app displays all feed entries, opens them in the browser on touch, and allows entries to be filtered according to the user's text input (not case-sensitive). The button on the top right resets the filter. Pulling refreshes the feed data.
