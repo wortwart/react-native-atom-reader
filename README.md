@@ -1,6 +1,6 @@
 # react-native-atom-reader
 
-This is a emo project with React Native to view and filter an Atom/RSS feed. Currently, it has only been tested with Android smartphones and the Atom feed of [heise online](https://heise.de/), but it should also work on iOS and other standards compliant Atom newsfeeds.
+This is a demo project with React Native to view and filter an Atom/RSS feed. Currently, it has only been tested with Android smartphones and the Atom feed of [heise online](https://heise.de/), but it should also work on iOS and other standards compliant Atom newsfeeds.
 
 This project was created for a tutorial in [c't Magazin](https://ct.de/) which will appear in autumn 2017.
 
