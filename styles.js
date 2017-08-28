@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 const leftMargin = 14;
-export default StyleSheet.create({
+const styles = StyleSheet.create({
 	header: {
 		marginTop: 28,
 		marginLeft: 4,
@@ -66,3 +66,5 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	}
 });
+
+export default styles;

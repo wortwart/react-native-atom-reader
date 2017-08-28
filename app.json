@@ -1,5 +1,17 @@
 {
   "expo": {
-    "sdkVersion": "20.0.0"
-  }
+    "name": "Atom Feed Reader",
+    "icon": "./appicon.png",
+    "version": "1.0.0",
+    "slug": "atomFeedReader",
+    "sdkVersion": "20.0.0",
+    "ios": {
+      "bundleIdentifier": "de.woerter.atomFeedReader"
+    },
+    "android": {
+      "package": "de.woerter.atomFeedReader"
+    }
+  },
+  "name": "atomFeedReader",
+  "displayName": "Atom Feed Reader"
 }
